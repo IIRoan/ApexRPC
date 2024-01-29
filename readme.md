@@ -1,17 +1,8 @@
-# Apex Legends Discord rich presence
-
-Displays a more fun version of rich presense for Apex, it translate your Steam activities into Discord, keeping your friends updated on your latest gaming adventures.
-
+Apex legends rich presence, scrapes steam's miniprofile to get the rich presence from steam and displays it as discord rich presence
+Only works with Apex Legends
 
 
+start with: 
 
-## how to use
-
-run the apexpresence.exe
-</br>
-insert your SteamID
-</br>
-Click the checkbox to start
-
-
-
+add your steamid in a file named steamid.txt <br/>
+run main.py 
