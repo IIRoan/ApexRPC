@@ -23,7 +23,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build with PyInstaller
-      run: pyinstaller --noconfirm --onedir --windowed --add-data "./nessie.ico;./" "./apexpresence.py"
+      run: pyinstaller --noconfirm --onefile --windowed --add-data "./nessie.ico;./" "./apexpresence.py"
       
 
     - name: Increment version and create release
