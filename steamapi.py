@@ -1,6 +1,8 @@
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
+from tkinter import messagebox
+
 
 def getSteamRichPresence():
         file = open('steamid.txt', 'r')
@@ -30,5 +32,5 @@ def getSteamRichPresence():
             else:
                 print("game not Apex Legends")
         except AttributeError:
-            print("User not found, in game or hidden")
+            messagebox.showerror("Error", "User not found, in game or hidden")
             
