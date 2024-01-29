@@ -1,15 +1,13 @@
 import tkinter as tk
 import customtkinter as ctk
+from PIL import ImageTk
 import re
 from gamemodes import game_modes
 from pypresence import Presence
-import time
 import threading
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
-from steamuser import SteamUser
-
 
 ctk.set_appearance_mode("System")
 
@@ -134,7 +132,7 @@ class ApexPresenceApp:
             self.display_message(f"{sdetails} on {sstate}", "black", "14000")
 
             if self.rich_presence_checkbox.get() == 1:
-                time.sleep(14)
+                sleep(14)
                 self.mainthread()
             else:
                 break
@@ -184,11 +182,14 @@ class ApexPresenceApp:
         
 # Create the main application window
 root = ctk.CTk()
+root.title("Apex presence")
+root.iconbitmap("./nessie.ico")
 root.geometry("300x200")
 
 # Initialize the app
-app = ApexPresenceApp(root)\
-    
+app = ApexPresenceApp(root)
+
+
 # Bind the close_app method to the window's close event
 root.protocol("WM_DELETE_WINDOW", app.close_app)
 # Run the application
