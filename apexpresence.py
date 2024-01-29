@@ -8,6 +8,8 @@ import threading
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
+import os
+import sys
 
 ctk.set_appearance_mode("System")
 
@@ -179,11 +181,22 @@ class ApexPresenceApp:
             self.RPC.clear()
         self.RPC = None
         root.destroy()
+      
+
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)      
         
 # Create the main application window
 root = ctk.CTk()
 root.title("Apex presence")
-root.iconbitmap("./nessie.ico")
+icon_path = resource_path('./nessie.ico')
+root.iconbitmap(icon_path)
 root.geometry("300x200")
 
 # Initialize the app
