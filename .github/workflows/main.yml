@@ -1,11 +1,11 @@
-name: Apex Presence
+name: Build
 
 on:
-  push:
+ push:
     branches: [ master ]
 
 jobs:
-  build:
+ build:
     runs-on: windows-latest
 
     steps:
@@ -22,4 +22,4 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build with PyInstaller
-      run: pyinstaller --noconfirm --onedir --windowed --add-data "C:\\Users\\Roan\\Documents\\ApexRPC\\nessie.ico;./" "C:\\Users\\Roan\\Documents\\ApexRPC\\apexpresence.py"
+      run: pyinstaller --noconfirm --onedir --windowed --add-data "./nessie.ico;./" "./apexpresence.py"
