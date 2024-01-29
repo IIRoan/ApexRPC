@@ -25,6 +25,7 @@ jobs:
     - name: Build with PyInstaller
       run: pyinstaller --noconfirm --onedir --windowed --add-data "./nessie.ico;./" "./apexpresence.py"
       
+
     - name: Increment version and create release
       id: version_increment
       uses: zendesk/action-create-release@v1
@@ -32,5 +33,15 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         version: '0.01'
-        pre_release: true
-        files: './dist/apexpresence.exe'
+        pre_release: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.version_increment.outputs.upload_url }}
+        asset_path: ./dist/apexpresence.exe
+        asset_name: apexpresence.exe
+        asset_content_type: application/octet-stream
