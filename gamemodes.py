@@ -35,5 +35,21 @@ game_modes = {
     "Baro": {
         "large_image": "barometer",
         "large_text": "Barometer"
-    }
+    },
+    "Over": {
+        "large_image": "overflow",
+        "large_text": "Overflow"
+    },
+    "Zeus": {
+        "large_image": "zeusstation",
+        "large_text": "Zeus Station"
+    },
+    "Caustic": {
+        "large_image": "caustictreatment",
+        "large_text": "Caustic Treatment"
+    },    
+    "Wattson": {
+        "large_image": "wattsonspylon",
+        "large_text": "Wattson's Pylon"
+    },    
 }
