@@ -1,4 +1,4 @@
-name: Build
+name: Build and release master branch
 
 on:
  push:
@@ -32,8 +32,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        version: '0.01'
-        pre_release: false
+       pre_release: True
 
     - name: Upload Release Asset
       id: upload-release-asset

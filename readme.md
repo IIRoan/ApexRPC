@@ -15,3 +15,21 @@ Click the checkbox to start
 
 
 
+## Development environment
+
+1. Clone this to your local machine
+   ```bash
+   git clone https://github.com/IIRoan/ApexRPC.git
+   cd ApexRPC
+   ```
+2. Make a VENV and enable it
+```bash
+python -m venv venv
+source venv/bin/activate  
+# for Windows: venv\Scripts\activate
+```
+
+3. Install the requirements.
+```bash
+pip install -r requirements.txt
+```
