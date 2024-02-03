@@ -3,7 +3,7 @@ import customtkinter as ctk
 from PIL import ImageTk
 import re
 from gamemodes import game_modes
-from pypresence import Presence
+from pypresence import Presence, exceptions
 import threading
 import requests
 from time import sleep
@@ -12,6 +12,12 @@ import os
 import sys
 
 ctk.set_appearance_mode("System")
+
+#Constants
+DISCORD_ID = "832730678859792444"
+STEAMID_FILE = 'steamid.txt'
+REFRESH_INTERVAL = 14000
+DISCONNECT_INTERVAL = 2000
 
 class ApexPresenceApp:
     def __init__(self, root):
@@ -26,7 +32,7 @@ class ApexPresenceApp:
 
         # Steam ID input field
         try:
-            with open('steamid.txt', 'r') as file:
+            with open(STEAMID_FILE, 'r') as file:
                 placeholder_text = file.read().strip()
         except FileNotFoundError:
             placeholder_text = "Your Steam name or ID"
@@ -50,7 +56,7 @@ class ApexPresenceApp:
         steam_id = self.input_field.get()
 
         if re.match(r'\d{17}$', steam_id):
-            file = open('steamid.txt', 'w')
+            file = open(STEAMID_FILE, 'w')
             file.write(steam_id)
             file.close()
             self.display_message("Succesfully saved", "green", "2000")
@@ -61,36 +67,45 @@ class ApexPresenceApp:
 
     def enable_rpc(self):
         if self.rich_presence_checkbox.get() == 1:
-            thread = threading.Thread(target=self.mainthread)
+            thread = threading.Thread(target=self.connect_to_discord)
             thread.start()
         if self.rich_presence_checkbox.get() == 0:
             self.RPC.clear() 
 
     def display_message(self, messagetext, messagecolor, time):
+        # Remove any existing popup
+        if hasattr(self, 'error_canvas'):
+            self.remove_popup()
+
         self.error_canvas = tk.Canvas(
-        root, width=200, height=20, bd=0, highlightthickness=0, bg="SystemButtonFace")
+            root, width=200, height=20, bd=0, highlightthickness=0, bg="black")
         self.error_canvas.place(x=50, y=85)
         self.error_text = self.error_canvas.create_text(
                 100, 10, text=messagetext, fill=messagecolor)
         root.after(time, self.remove_popup)
-        
+            
     def remove_popup(self):
-        self.error_canvas.place_forget()    
+        if hasattr(self, 'error_canvas'):
+            self.error_canvas.delete('all')
+            delattr(self, 'error_canvas')
 
 
-    def mainthread(self):
+    def connect_to_discord(self):
         if self.rich_presence_checkbox.get() == 0:
             self.RPC.clear() 
         
         while self.rich_presence_checkbox.get() == 1:  
             if not self.discord_connected: # Only connect if not already connected
-                discord_id = "832730678859792444"
-                self.RPC = Presence(client_id=discord_id)
-                self.RPC.connect()
-                self.discord_connected = True
-                print("connection to DiscordRPC established")
-            
-                      
+                try:
+                    self.RPC = Presence(client_id=DISCORD_ID)
+                    self.RPC.connect()
+                    self.discord_connected = True
+                    self.display_message("connection to Discord established", "green", "2000")
+                except exceptions.DiscordNotFound:
+                    self.display_message("Could not find Discord.", "red", "2000")
+                except Exception as e:
+                    self.display_message("Error connecting to Discord.", "red", "2000")
+
             # Gets new SteamRPC
             steamrpc = self.getSteamRichPresence()
             while steamrpc is None:
@@ -134,13 +149,13 @@ class ApexPresenceApp:
             self.display_message(f"{sdetails} on {sstate}", "black", "14000")
 
             if self.rich_presence_checkbox.get() == 1:
-                sleep(14)
-                self.mainthread()
+                sleep(REFRESH_INTERVAL)
+                self.connect_to_discord()
             else:
                 break
             
     def getSteamRichPresence(self):
-        file = open('steamid.txt', 'r')
+        file = open(STEAMID_FILE, 'r')
         userID = file.read()
         file.close()
 
@@ -158,19 +173,28 @@ class ApexPresenceApp:
     
         #Gets current game
         gamename = soup.find("span", class_="miniprofile_game_name")
+
+        attempts = 0
+        max_attempts = 20
         
-        
-        try:
-            if gamename.text == "Apex Legends":
-                rich_presence = soup.find("span", class_="rich_presence")
-                return [rich_presence.text, gamename.text]
-            else:
+
+        while attempts < max_attempts:
+            try:
+                if gamename.text == "Apex Legends":
+                    rich_presence = soup.find("span", class_="rich_presence")
+                    return [rich_presence.text, gamename.text]
+                else:
+                    self.RPC.clear()
+                    print("game not Apex Legends")
+            except AttributeError:
+                attempts += 1
                 self.RPC.clear()
-                print("game not Apex Legends")
-        except AttributeError:
-            self.RPC.clear()
-            print("Still erroring")
-            self.display_message("User not found or not in game", "red", "1000")
+                self.display_message("User not found or not in game", "red", "1000")
+                sleep(1)
+                if attempts >= max_attempts:
+                    self.remove_popup()
+                    raise Exception("Maximum attempts reached")
+
                 
         
         
@@ -195,8 +219,9 @@ def resource_path(relative_path):
 # Create the main application window
 root = ctk.CTk()
 root.title("Apex presence")
-icon_path = resource_path('./nessie.ico')
-root.iconbitmap(icon_path)
+icon_path = resource_path('./nessie.png') # Use PNG for Linux
+icon = tk.PhotoImage(file=icon_path)
+root.iconphoto(False, icon)
 root.geometry("300x200")
 
 # Initialize the app
