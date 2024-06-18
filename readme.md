@@ -1,10 +1,15 @@
-# Note:
-Unfortunatly steam has patched this method, they have removed current game being played from the the mini profile banner web page. This ultimatly breaks functionality and makes this unusable thus im archiving it
+# Note
+Steam has added an delay or some sort of caching the page that is scraped to display the rich presence, while this means the program still works it doesnt update as frequently as before.
+By my testing steam updates the page now every 7.5 minutes, kind of defeats the purpose but it still works.
 
 # Apex Legends Discord rich presence
 
 Displays a more fun version of rich presense for Apex, it translate your Steam activities into Discord, keeping your friends updated on your games.
 
+![2024-06-18_13-02](https://github.com/IIRoan/ApexRPC/assets/82589897/da6e035f-017e-4c02-998e-00b55cc9c98c)
+![2024-06-18_13-12](https://github.com/IIRoan/ApexRPC/assets/82589897/3e5c0a84-09f9-4be5-8647-fb249b6c0cdd)
+![2024-06-18_12-57](https://github.com/IIRoan/ApexRPC/assets/82589897/9be62a97-2e61-4e33-b34b-5e9edfbccacf)
+![2024-06-18_12-57_1](https://github.com/IIRoan/ApexRPC/assets/82589897/fd738a67-484b-4295-afc8-b3db3cb055ae)
 
 
 
