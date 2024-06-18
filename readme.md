@@ -1,6 +1,9 @@
+# Note:
+Unfortunatly steam has patched this method, they have removed current game being played from the the mini profile banner web page. This ultimatly breaks functionality and makes this unusable thus im archiving it
+
 # Apex Legends Discord rich presence
 
-Displays a more fun version of rich presense for Apex, it translate your Steam activities into Discord, keeping your friends updated on your latest gaming adventures.
+Displays a more fun version of rich presense for Apex, it translate your Steam activities into Discord, keeping your friends updated on your games.
 
 
 
