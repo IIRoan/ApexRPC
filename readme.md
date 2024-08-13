@@ -1,6 +1,6 @@
 # Note
-Steam has added an delay or some sort of caching the page that is scraped to display the rich presence, while this means the program still works it doesnt update as frequently as before.
-By my testing steam updates the page now every 7.5 minutes, kind of defeats the purpose but it still works.
+Steam has added a delay or some kind of caching to the page that's scraped for rich presence info. The program still works, but it doesn't update as often as before.
+From my tests, Steam now updates the page about every 7.5 minutes. This kind of defeats the purpose of real-time updates, but the program still functions.
 
 # Apex Legends Discord rich presence
 
